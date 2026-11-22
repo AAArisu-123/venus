@@ -1,13 +1,4 @@
-"""Persistent long-term memory for Venus personas, scoped per user.
-
-Storage backend is SQLite. Every query is fully parameterized: persona,
-user_id and content are treated strictly as data and never interpolated into
-SQL, so hostile strings are stored verbatim rather than executed.
-
-Memory ownership is the (persona, user_id) pair. Reads and deletes are always
-filtered by both fields, guaranteeing isolation between users and between
-personas sharing one user.
-"""
+"""Long-term memory, stored per persona and user in SQLite."""
 
 import sqlite3
 from datetime import datetime, timezone

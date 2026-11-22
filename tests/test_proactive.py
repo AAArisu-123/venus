@@ -1,16 +1,4 @@
-"""TDD tests for :mod:`venus.proactive`.
-
-These tests define the behavioural contract of the proactive daily-message
-scheduler. Every call injects an explicit *aware* UTC datetime, so the suite is
-deterministic and never reads the system clock, ``.env`` files or the
-production ``data`` directory.
-
-Module under test is expected to expose::
-
-    init_proactive(db)
-    set_schedule(db, persona, user_id, enabled, hour, minute, timezone) -> None
-    due_and_claim(db, persona, user_id, now_utc) -> bool
-"""
+"""Tests for the proactive schedule and daily claim."""
 
 import os
 import sqlite3

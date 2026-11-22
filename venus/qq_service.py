@@ -1,4 +1,7 @@
-﻿"""Windows Task Scheduler entry point; persist only fixed status messages."""
+"""Windows Task Scheduler entry point for the QQ bot.
+
+Only fixed status lines are written to the rotating log.
+"""
 import logging
 import os
 import sys

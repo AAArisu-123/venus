@@ -1,18 +1,4 @@
-"""Race tests for duplicate QQ message ids.
-
-Scenario: two concurrent events share one message id. The first request is
-blocked inside the model call while the second one starts and is then either
-completed or cancelled. The first reply must still be delivered exactly once,
-through the api object belonging to the request that produced it.
-
-Only observable behaviour is asserted: which api objects received
-``post_c2c_message`` calls, what was sent, and how many times the model was
-asked. No internal bookkeeping of the client is inspected.
-
-A fake ``botpy`` is injected into ``sys.modules`` before importing
-``venus.qq_bot``. Fakes follow tests/test_qq_bot.py. Nothing here touches the
-network or real credentials.
-"""
+"""Two deliveries with the same message id must not double-send."""
 
 import asyncio
 import contextlib

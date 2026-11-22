@@ -1,14 +1,4 @@
-"""TDD tests for the ``/修改记忆 ID 新内容`` slash command.
-
-The command is not implemented in production yet; these tests describe the
-required contract (tests only -- no production module is changed, no shell is
-run, and no real data, secrets or environment variables are used).
-
-Every test gets a brand-new on-disk SQLite database inside a
-``TemporaryDirectory`` and exercises the feature exclusively through
-``handle_command``. All assertions about stored state go through
-``list_memories`` so the tests check real persistence rather than reply text.
-"""
+"""Tests for the /修改记忆 command."""
 
 import tempfile
 import unittest

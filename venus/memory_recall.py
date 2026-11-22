@@ -1,16 +1,7 @@
-"""Hybrid recall over stored long-term memories.
+"""Read-only recall over long-term memories.
 
-Read-only: every query is a parameterized SELECT filtered by both persona and
-user_id, scanning all active memories in the scope. Matching stays lexical
-(adjacent CJK bigrams and case-insensitive alphanumeric words), then the
-final order combines four signals used by long-running agents:
-
-* lexical relevance -- how many distinct query tokens the memory contains;
-* importance       -- the stored 1..5 salience;
-* recency          -- exponential decay from the last use or creation time;
-* usage            -- how often the memory has already proven useful.
-
-No network, no writes, no embeddings.
+Candidates are matched lexically, then ranked by relevance, importance,
+recency and past use.
 """
 
 import math

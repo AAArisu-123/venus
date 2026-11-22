@@ -1,14 +1,4 @@
-"""Small, model-written "what I have been up to" notes for a persona.
-
-A companion feels alive when she has her own day to talk about instead of only
-reacting to the user. The proactive composer asks the model for one concrete
-little thing she is doing today; that note is stored here and later injected
-into ordinary chat as background, so a detail she mentioned in a morning opener
-can still be referenced in the evening.
-
-Storage is scoped by ``(persona, user_id)`` in the caller's SQLite connection.
-Nothing here reads the clock or the network.
-"""
+"""Small "what I've been up to" notes used by proactive openers."""
 
 _MAX_CONTENT = 200
 _MAX_SUMMARY_CHARS = 400

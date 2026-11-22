@@ -1,29 +1,4 @@
-"""Tests for ``venus.web_tool.complete_web`` (test-first specification).
-
-Contract under test:
-
-    complete_web(base_url, api_key, messages) -> (content, sources)
-
-* Calls a DeepSeek-compatible Chat Completions endpoint (``/chat/completions``)
-  with ``model == "deepseek-flash"``, ``tools == [{"type": "deepseek_web_search"}]``
-  and thinking disabled, preserving the persona/system and user context
-  messages unchanged in order.
-* Returns ``(content, sources)`` where ``sources`` is built ONLY from
-  server-provided web-search annotations (never invented, never scraped out
-  of the model text).
-* Validates annotations: unsafe (non http/https) URLs, an empty/failed web
-  search presented as a live answer, redirect responses, error statuses and
-  malformed payloads all raise ``web_tool.WebToolError``.
-* Rejects non-HTTPS, non-loopback ``base_url`` endpoints and blank inputs.
-* Every request is time bounded: an unresponsive server must not hang the
-  caller forever.
-
-Hard test constraints honoured here: all traffic goes to an in-process fake
-HTTP server bound to 127.0.0.1 on an ephemeral port (plus one unresolvable
-documentation-range IP used only to prove rejection happens *before* any
-network attempt). Keys are obviously fake. Nothing real is contacted and no
-environment variables or secrets are read.
-"""
+"""Tests for the DeepSeek web-search client, using a local fake HTTP server."""
 
 import json
 import threading

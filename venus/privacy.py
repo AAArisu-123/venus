@@ -1,14 +1,6 @@
-"""Local guard for high-confidence secrets and personal identifiers.
+"""Block secrets and personal identifiers before a model call.
 
-The companion is allowed to be intimate, but a chat message is still sent to a
-third-party model provider and stored in local SQLite. This module catches the
-narrow set of strings that are almost never safe to forward: private keys,
-API keys, passwords, verification codes, ID numbers, bank cards, and phone
-numbers. It is intentionally conservative: ordinary conversation must pass
-through untouched.
-
-Nothing here logs or echoes the matched value. ``safe_reply`` only names the
-category so the user can remove it and resend.
+The rules are deliberately narrow so normal chat passes through unchanged.
 """
 
 import re

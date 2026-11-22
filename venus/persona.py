@@ -1,7 +1,4 @@
-"""Independent persona loading for Venus.
-
-Loads a UTF-8 JSON persona file and validates the required fields.
-"""
+"""Load and validate a UTF-8 persona JSON file."""
 
 import json
 
@@ -23,14 +20,10 @@ MAX_EXAMPLE_ASSISTANT_CHARS = 1000
 
 
 def load_persona(path):
-    """Read a persona JSON file and return it as a dict.
+    """Read and validate a persona JSON file.
 
-    Requires nonempty string ``name`` and ``description`` (at most
-    12000 characters). Optional ``style``, ``boundaries`` and
-    ``relationship_pace`` strings are validated when present. Any other
-    fields are passed through untouched.
-    Raises ValueError on invalid content; OSError/json.JSONDecodeError
-    propagate from file reading and JSON parsing.
+    ``name`` and ``description`` are required; optional fields are checked when
+    present. Invalid content raises ValueError.
     """
     with open(path, encoding='utf-8') as source:
         data = json.load(source)

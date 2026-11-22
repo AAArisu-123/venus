@@ -30,7 +30,6 @@ data/
 *.db-shm
 *.log
 logs/
-维纳斯.txt
 qq-credentials.json
 venus-log-test-*/
 

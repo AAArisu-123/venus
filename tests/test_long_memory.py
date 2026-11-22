@@ -1,14 +1,4 @@
-"""TDD tests for venus.long_memory (tests only; module not yet implemented).
-
-API under test:
-    init_memory(db) -> None
-    add_memory(db, persona, user_id, content) -> int
-    list_memories(db, persona, user_id) -> list[tuple[int, str]]
-    delete_memory(db, persona, user_id, memory_id) -> bool
-
-`db` is an existing sqlite3 connection. All tests use in-memory sqlite3
-(shared-cache memory URIs so a "re-open" can be simulated without files).
-"""
+"""Tests for long-term memory storage."""
 
 import sqlite3
 import unittest

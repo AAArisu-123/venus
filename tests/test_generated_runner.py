@@ -1,29 +1,4 @@
-"""Tests for the intended generation-aware venus.proactive_runner.tick().
-
-Contract under test (the "generation" addition):
-
-``tick(path, persona, send, now, authorized=None, generate=None)`` is async.
-``generate`` is an async callable that takes ONLY ``user_id`` and returns a
-generated opener string. For each enabled persona/user whose schedule is due
-and whose activity allows a message today, tick must:
-
-* call ``await generate(user_id)`` and deliver the returned content via
-  ``send``,
-* after ``await send`` *succeeds*, persist ONLY an assistant row to the
-  (persona, user_id)-scoped short-term history -- no fabricated user turn,
-* deliver at most once per local day (a later tick that day neither generates
-  nor sends again),
-* on generation failure or blank output: send nothing, persist nothing and do
-  not retry that day,
-* on an ambiguous transport failure (e.g. timeout): persist nothing and do not
-  retry that day,
-* when the schedule is disabled or ``authorized`` rejects the identity: do
-  neither generate nor send.
-
-Only a real temporary SQLite database is used; no network, credentials, .env
-or production data are touched. Tests run on the isolated asyncio test case
-and use plain fake async callables.
-"""
+"""Tests for tick() with a generated opener, including persistence and retry behavior."""
 
 import tempfile
 import unittest

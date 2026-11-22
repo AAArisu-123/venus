@@ -1,9 +1,4 @@
-"""Independent QQ C2C (single-chat) inbound event validation.
-
-This module is a pure validator: it neither prints nor stores messages or
-credentials, reads no files and performs no network access. It only inspects
-the caller-supplied dictionary and returns plain values.
-"""
+"""Validate QQ C2C event payloads without side effects."""
 
 
 def _nonempty_string(value):
@@ -12,22 +7,7 @@ def _nonempty_string(value):
 
 
 def parse_c2c_event(data):
-    """Validate the inner ``data`` object of a QQ C2C message event.
-
-    The expected payload (per the QQ bot OpenAPI single-chat event) carries:
-
-    * ``id`` -- the message id;
-    * ``author.user_openid`` -- the sender's open id;
-    * ``content`` -- the message body text;
-    * optional extra fields such as ``attachments`` are ignored.
-
-    Every required field must be a non-empty string (whitespace-only counts
-    as empty). Only the body text is stripped.
-
-    Returns ``(message_id, user_id, text)`` for a valid event, or ``None``
-    when the payload is malformed or carries no text body -- for example an
-    attachment-only message whose ``content`` is empty.
-    """
+    """Return `(message_id, user_id, text)`, or None if the event is unusable."""
     if not isinstance(data, dict):
         return None
 

@@ -1,10 +1,4 @@
-"""DeepSeek-compatible Chat Completions client with server-side web search.
-
-Exposes ``complete_web(base_url, api_key, messages) -> (content, sources)``.
-Sources come only from validated server annotations; every failure mode
-(bad endpoint, network error, timeout, redirect, error status, malformed
-payload, failed search, unsafe citation URL) raises ``WebToolError``.
-"""
+"""Small DeepSeek client with server-side web search."""
 
 import ipaddress
 import json

@@ -1,9 +1,4 @@
-"""Independent conversation-memory storage for Venus.
-
-Uses a local SQLite database. Persona and user identifiers are opaque
-strings supplied by the caller; this module never reads credentials or
-environment variables.
-"""
+"""Short-term conversation history in SQLite."""
 
 import sqlite3
 from pathlib import Path

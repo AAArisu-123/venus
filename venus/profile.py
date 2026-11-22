@@ -1,13 +1,4 @@
-"""Explicit, user-editable profile layered on top of long-term memory.
-
-Venus already stores what happened in the conversation; this module stores
-who the user wants the companion to be for them. The profile is deliberately
-small and explicit: a preferred name, a communication style, and boundaries.
-It is scoped by the same opaque ``(persona, user_id)`` pair as other storage,
-and every statement is parameterized.
-
-Nothing here reads the environment, credentials, or the network.
-"""
+"""User-set name, style and boundaries, scoped per persona and user."""
 
 import sqlite3
 from datetime import datetime, timezone

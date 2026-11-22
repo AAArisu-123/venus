@@ -1,8 +1,6 @@
-"""Owner-facing CLI for approving and revoking pairing codes.
+"""Approve or revoke QQ pairing codes from the terminal.
 
 Usage: python -m venus.pair_cli --list | --approve CODE | --revoke OPENID
-Optional: --db PATH (default data/pairing.sqlite3).
-Openids are always masked so secrets never reach the terminal.
 """
 
 import sys

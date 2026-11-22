@@ -1,14 +1,6 @@
-"""Slash-command layer for Venus personas.
+"""Slash commands for QQ private chat.
 
-Ordinary text is returned as ``None`` so the caller can route it to the
-conversation model instead. Storage lives in the caller-supplied SQLite connection; the
-persona and user identifiers are opaque strings and every statement is fully
-parameterized, so hostile input is data and never executed.
-
-Privacy: all reads, writes and deletes are filtered by the
-``(persona, user_id)`` pair, and replies only ever describe the requesting
-user's own entries. Response text is clipped so a long memory can never turn
-into an unbounded reply.
+Non-command text returns None so it can go to the model.
 """
 
 import re
@@ -72,9 +64,7 @@ _ABOUT_TEXT = (
     "你可以用 /记忆 查看和删除长期记忆，用 /画像 查看和清除个性化设置。"
 )
 
-# Enabling web search must disclose that the model's search terms are sent to
-# an external provider and may carry a cost, and that proactive sharing is a
-# separate opt-in. Kept as module constants so the wording cannot drift.
+# Keep the consent wording in one place so it cannot drift.
 _WEB_ENABLE_REPLY = (
     "已开启联网搜索。请注意：联网搜索会把你的搜索词发送给外部搜索服务商，"
     "可能产生额外费用；请只搜索你愿意对外提供的内容。"

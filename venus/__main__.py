@@ -1,3 +1,5 @@
+"""Command-line chat entry point."""
+
 import argparse
 from contextlib import closing
 import http.client
@@ -23,6 +25,7 @@ from .web_settings import is_enabled as web_enabled
 from .web_tool import complete_web, WebToolError
 from .persona import load_persona
 from .privacy import detect, safe_reply
+from .env_file import load_env_file
 from . import affect
 from . import life
 from .affect_appraisal import make_appraisal, should_appraise
@@ -186,11 +189,18 @@ def main():
     parser.add_argument('--user', default='local', help='本地用户标识（不是身份认证）')
     parser.add_argument('--message', help='发送一条消息并退出；省略则进入交互模式')
     args = parser.parse_args()
+    # Match the QQ bot and doctor: a local .env keeps secrets out of the
+    # shell history and out of the repository.
+    load_env_file(Path(__file__).resolve().parent.parent / '.env')
     key = os.environ.get('VENUS_API_KEY', '')
     base = os.environ.get('VENUS_BASE_URL', '')
     model = os.environ.get('VENUS_MODEL', '')
     if not all((key, base, model)):
-        parser.exit(2, '请设置 VENUS_API_KEY、VENUS_BASE_URL、VENUS_MODEL 环境变量。\n')
+        parser.exit(
+            2,
+            '请设置 VENUS_API_KEY、VENUS_BASE_URL、VENUS_MODEL'
+            '（可在项目根目录的 .env 中配置）。\n',
+        )
     try:
         persona = load_persona(args.persona)
         with closing(connect_database(args.db)) as db:
