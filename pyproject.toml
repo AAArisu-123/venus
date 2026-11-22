@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "venus-companion"
 version = "0.1.0"
-description = "A local-first, persona-driven AI chat companion with long-term memory and gentle proactive messages."
+description = "A personal chat companion for QQ and the terminal, with JSON personas and long-term memory."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

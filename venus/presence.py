@@ -1,15 +1,6 @@
-"""Presence tracking for natural "text back" follow-ups.
+"""Track the last speaker and unanswered messages.
 
-The module records, per ``(persona, user_id)``, when the user last spoke, when
-the assistant last spoke, and how many assistant messages have gone unanswered
-in a row. That is enough for :func:`followup_due` to decide whether a companion
-should add one more short message into a conversation that has gone quiet --
-without turning into spam.
-
-All time decisions use the explicit aware ``datetime`` supplied by the caller;
-this module never reads the system clock. Storage lives in the caller-supplied
-SQLite connection and is scoped by ``(persona, user_id)`` so one identity can
-never read or affect another.
+Used by the optional follow-up path; the bot leaves it off by default.
 """
 
 from datetime import datetime, timezone as dt_timezone

@@ -1,28 +1,7 @@
-"""Durable, per-identity proactive daily-message scheduling for Venus.
+"""Proactive-message schedules and claims.
 
-Schedules, random daily targets and one-shot daily claims are stored in a
-caller-supplied SQLite connection.  This module never reads the system clock,
-environment variables, credentials or the production ``data`` directory: every
-time decision is driven by the explicit ``now_utc`` argument.  It uses only the
-standard library and makes no external calls.
-
-Safety properties:
-
-* Schedules are *disabled by default* -- an identity with no explicit row is
-  never due.
-* A schedule is keyed by ``(persona, user_id)``, a random target and a claim
-  by ``(persona, user_id, local_day)``, so identities cannot affect one
-  another.
-* A daily local time is interpreted in the schedule's IANA timezone; the
-  incoming ``now_utc`` is first normalised to UTC, then converted.
-* Claims are inserted under a UNIQUE (PRIMARY KEY) constraint so exactly one
-  racer can win, and are committed before ``due_and_claim`` returns
-  ("claim before send" is durable across threads and processes).
-* ``mode = 'random'`` schedules pick one local minute-of-day per day inside
-  the window [10:00, 21:00) via ``secrets.randbelow``, persist it before any
-  waiting, and reuse the stored value across polls, reconnects and restarts.
-  Random schedules are never due outside the window; in particular there is
-  no late catch-up at or after 21:00 local time.
+Every decision takes an explicit `now_utc`, and a claim is written before
+sending so a retry cannot double-send.
 """
 
 import secrets
@@ -32,11 +11,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 RANDOM_WINDOW_START = 10 * 60
 RANDOM_WINDOW_SPAN = 660  # 10:00 (inclusive) .. 20:59 (21:00 exclusive)
 
-# One calm evening window (local minutes) used by the richer proactive mode.
-# A companion should feel present, not chatty: at most one unprompted message
-# per day, and only if the conversation has been quiet for a while. Keeping
-# the window in the evening makes an opener feel like a natural "how was your
-# day" instead of a scheduled reminder.
+# One evening window, one opener per day, and only after a quiet stretch.
 SLOT_WINDOWS = (
     (19 * 60, 21 * 60),
 )
@@ -234,17 +209,10 @@ def _random_target_minute(db, persona, user_id, local_day,
 
 
 def due_and_claim(db, persona, user_id, now_utc, target_window=None):
-    """Return ``True`` and atomically claim this identity's next message.
+    """Claim this user's next message if it is due now.
 
-    Returns ``False`` (claiming nothing) when the identity is unknown,
-    disabled, before its scheduled local time, or already claimed for that
-    local day. A ``mode = 'random'`` schedule is due only from its stored
-    random minute (generated at most once per local day) inside the configured
-    window. ``target_window`` is an optional ``(start_minute, end_minute)``
-    local-time pair; when omitted, the legacy 10:00-21:00 window is used. The
-    whole check-and-claim runs in one transaction and the claim is committed
-    before returning, so racing connections/processes cannot double-claim and
-    a claim survives reconnects and restarts.
+    Returns False when the schedule is off, early, or already claimed today.
+    The claim is committed before returning, so a crash cannot cause a resend.
     """
     if target_window is None:
         window_start, window_end = (
@@ -359,14 +327,9 @@ def claimed_slots_today(db, persona, user_id, local_day):
 
 def slot_due_and_claim(db, persona, user_id, now_utc, *, slots=SLOT_WINDOWS,
                        max_per_day=None, min_gap_minutes=SLOT_MIN_GAP_MINUTES):
-    """Return ``True`` and claim one slot of this identity's day.
+    """Claim one slot for this user if it is open and due.
 
-    A slot is due when the current local minute falls inside its window, that
-    window's stored random target minute has passed, the slot has not been
-    claimed, the daily cap is not reached, and the last claim is at least
-    ``min_gap_minutes`` away. The check and the claim run in one transaction,
-    and the claim is committed before returning, so a tick that crashes after
-    claiming still never retries that slot.
+    The check and the insert share a transaction, so two ticks cannot both win.
     """
     if max_per_day is None:
         max_per_day = len(slots)

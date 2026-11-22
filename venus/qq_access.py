@@ -1,14 +1,4 @@
-"""QQ access gate: static allowlist or owner-approved pairing codes.
-
-The gate has two modes:
-
-* Allowlist mode (``allowed`` is non-empty): only users in the allowlist are
-  served; everyone else is denied and never prompted.
-* Pairing mode (``allowed`` is empty): an unknown user is shown a short-lived
-  code once; after the owner approves it locally the user is served.
-
-Access is denied by default, including on any database error (fail closed).
-"""
+"""QQ access control: allowlist or locally approved pairing codes."""
 
 import sqlite3
 import time

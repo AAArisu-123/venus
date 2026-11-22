@@ -1,10 +1,4 @@
-"""Layered prompt assembly for Venus.
-
-Order matters: the fixed safety layer comes first, then the persona, then the
-user-editable profile, then retrieved memories, then conversation history.
-Profile and memory blocks are explicitly labelled as data rather than
-instructions, because both can contain arbitrary user text.
-"""
+"""Build the layered prompt: safety, persona, profile, memory, history."""
 
 import json
 import re

@@ -1,9 +1,4 @@
-"""Local file-based store for the QQ AppID/AppSecret pair.
-
-The QR onboarding flow writes the credentials obtained from Tencent into a
-local JSON file; the bot reads it at startup instead of asking the user to
-copy secrets by hand. Nothing here prints, logs or echoes a secret.
-"""
+"""Read and write the local QQ AppID/AppSecret file."""
 
 import json
 import os

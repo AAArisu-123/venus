@@ -1,4 +1,4 @@
-"""Venus QQ private-message handler core."""
+"""Venus QQ private-message handler."""
 
 import asyncio
 

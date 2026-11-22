@@ -1,7 +1,7 @@
 # Contributing
 
-Thanks for taking an interest in Venus. This is a small personal project, so
-please keep changes focused and explain the user-visible behavior they change.
+Venus is a small personal project. If you send a change, keep it focused and
+explain what it changes for the user.
 
 ## Development setup
 

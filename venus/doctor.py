@@ -1,25 +1,6 @@
-"""Owner-facing self-check for the local Venus setup.
+"""Local self-check for configuration, persona, database, logs and QQ.
 
-Every check that is easy to get wrong by hand is one command here instead of an
-ad-hoc script: configuration, persona, database, proactive schedule, the log
-destination and the paired users are all reported locally. Two network checks
-are opt-in:
-
-``--api``
-    Send one tiny chat completion through the configured model endpoint.
-
-``--send-test``
-    Send one QQ private message over plain HTTPS. This talks to the QQ bot API
-    directly (access token + ``/v2/users/{openid}/messages``) instead of
-    opening a gateway, so the scheduled bot may keep running while it checks
-    the delivery path.
-
-Usage:
-    python -m venus.doctor [--api] [--send-test] [--openid ID]
-                           [--env PATH] [--db PATH] [--pairing-db PATH]
-
-Secrets never reach stdout: the app id and openids are masked, the API key and
-client secret are never printed, and only error codes (not bodies) are echoed.
+`--api` and `--send-test` are the only checks that touch the network.
 """
 
 import json
@@ -32,14 +13,14 @@ from contextlib import closing
 from pathlib import Path
 from typing import Tuple
 
+from .config import load_config
 from .env_file import load_env_file
 from .memory import connect_database
 from .pairing import approved_openids
 from .pairing import connect_database as connect_pairing_database
 from .persona import load_persona
-from .qq_bot import DEFAULT_PERSONA, load_config
 from .qq_service import open_status_handler
-from .__main__ import _complete
+from .__main__ import DEFAULT_PERSONA, _complete
 
 DEFAULT_ENV = Path(__file__).resolve().parent.parent / '.env'
 TOKEN_URL = 'https://bots.qq.com/app/getAppAccessToken'

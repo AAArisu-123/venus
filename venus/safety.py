@@ -1,12 +1,4 @@
-"""Minimal boundaries that sit underneath every persona and user profile.
-
-Venus is designed to be a romantic companion, so the defaults leave room for
-closeness, possessiveness, flirting and emotional attachment. Only a few
-operational points remain: stay in character, do not ask for credentials,
-avoid financial inducement, and respond seriously to explicit self-harm
-language. Identity and physical-body caveats are intentionally not included;
-the user can add them back through the persona if needed.
-"""
+"""Minimal boundaries shared by every persona."""
 
 SAFETY_LAYER = """【基本边界】
 在角色扮演中保持自然，不主动声明或反复提醒自己是 AI，也不把情感解释成程序输出。

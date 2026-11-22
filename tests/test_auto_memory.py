@@ -1,25 +1,4 @@
-"""TDD tests for venus.auto_memory (tests only; module not yet implemented).
-
-API under test:
-    extract_candidates(text) -> list[str]
-        Deterministic, regex-based extraction of explicit first-person
-        Chinese preference statements. No model is involved, so nothing can
-        be "hallucinated": text without an explicit 我+喜欢-style statement
-        yields []. Text containing sensitive terms (passwords, codes, bank,
-        medical), long digit runs, third-party or negated statements, or
-        longer than 200 chars yields [] wholesale.
-
-    remember_candidates(db, persona, user_id, text) -> list[int]
-        Runs extract_candidates and stores each candidate into the existing
-        venus.long_memory schema via that module, returning the new row ids.
-        Successive equivalent candidates within one call are deduplicated,
-        and candidates already stored for this exact (persona, user_id)
-        scope are suppressed (exact-string match). Other scopes are
-        unaffected. Persistence is ordinary SQLite (survives reopen).
-
-All storage tests use a tempfile-backed SQLite file with the schema created
-by venus.long_memory.init_memory.
-"""
+"""Tests for regex-based automatic memory extraction."""
 
 import os
 import sqlite3

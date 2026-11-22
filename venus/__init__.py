@@ -1,1 +1,1 @@
-"""Venus: an extensible personal AI companion foundation."""
+"""Venus: a chat companion for QQ and the terminal."""

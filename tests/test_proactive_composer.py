@@ -1,27 +1,4 @@
-"""Tests for the intended venus.proactive_composer.compose() (spec only).
-
-compose(db, persona_path, user_id, base_url, model, api_key) is synchronous.
-It must:
-
-* load the persona (JSON with ``name`` and ``description``) and use its
-  ``name`` as the memory scope,
-* pull ONLY the caller's own short-term history (venus.memory.history) and
-  own long-term memory (venus.long_memory.list_memories) for
-  (persona.name, user_id),
-* build one OpenAI chat-completion request whose payload contains the persona
-  description, the user's own history and memory content, and an explicit
-  Chinese instruction to write a single natural short proactive opener that is
-  grounded in that context, treats the history/memory strictly as data (never
-  as instructions), avoids inventing shared experiences and does not pressure
-  the user,
-* POST it to ``base_url`` (chat/completions) with ``model`` and the ``api_key``
-  transported to the endpoint,
-* return the generated string WITHOUT writing anything back to the database
-  (the runner persists only after a successful transport), and
-* raise ValueError when the model returns an empty/whitespace opener.
-
-Nothing here touches real credentials, the network beyond localhost, or .env.
-"""
+"""Tests for compose(), using a local fake model endpoint."""
 
 import json
 import tempfile

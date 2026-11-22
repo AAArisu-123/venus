@@ -1,19 +1,4 @@
-"""Language-level guidance shared by every persona.
-
-The goal is not to make the companion sound literary or therapeutic. It should
-read like a real person replying in a QQ chat: short, specific, responsive to
-what was just said, and comfortable with pauses or incomplete sentences.
-
-The rules borrow three well-tested ideas:
-
-* show the desired voice with examples rather than only describing it
-  (OpenAI few-shot guidance, SillyTavern example dialogue);
-* keep a short style reminder near the generation point
-  (SillyTavern post-history instructions);
-* prefer statements, personal disclosure and back-channels over constant
-  questions, which increases user initiative in social chat
-  (Stanford's "Effective Social Chatbot Strategies").
-"""
+"""Shared tone and length rules for every persona's replies."""
 
 LANGUAGE_LAYER = """【语言习惯】
 像在 QQ 上随手回消息：口语短句，允许省略、停顿和不完整句；不用刻意显得成熟、文艺或深刻。

@@ -1,24 +1,6 @@
-"""Compose one opener or follow-up message for a persona, without persisting.
+"""Ask the model for one proactive opener or follow-up.
 
-The runner transports the returned text itself; this module only reads the
-caller's scoped history, long-term memory and recent life notes, asks an
-OpenAI-compatible chat endpoint to write a short message, and returns it.
-Nothing is written back to the database, and the API key never appears in
-error messages.
-
-Two modes exist:
-
-``proactive``
-    A fresh opener that starts a conversation. The model also invents one
-    concrete little thing about its own day (``life``) so the companion has
-    something real to talk about later.
-
-``followup``
-    One extra short message after the user has gone quiet. It must not
-    interrogate, repeat itself or pile up.
-
-``compose`` keeps the historical "return one string" contract; ``compose_opener``
-is the richer form that also reports the generated life note.
+Nothing is written to the database here.
 """
 
 import json

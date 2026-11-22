@@ -1,16 +1,7 @@
-"""Deterministic, regex-based extraction of explicit first-person preference
-statements, and their storage into the venus.long_memory schema.
+"""Pull explicit "I like ..." preferences out of new messages.
 
-No model is involved, so nothing can be hallucinated: text that does not
-contain an explicit 我+喜欢 statement yields []. Any sensitive, third-party,
-negated, or overlong input rejects the whole text rather than partially
-extracting from it.
-
-Storage deduplication is exact-string and scope-aware: candidates already
-present anywhere in the (persona, user_id) rows are suppressed, so repeated
-calls are idempotent and a deleted memory can be stored again. The duplicate
-check reads all rows for the scope directly (long_memory.list_memories caps
-its results, which would let older duplicates slip through).
+This is regex-based, not a model call. Anything ambiguous, negated,
+third-party or too long is skipped.
 """
 
 import re

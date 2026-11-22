@@ -1,13 +1,4 @@
-"""Durable, per-(persona, user) opt-in for public/web search in Venus.
-
-The consent flag lives in a scope-owned SQLite table inside the caller's
-connection. Like auto-memory consent, web access is *off by default*: an
-identity with no stored row is never considered opted in. Persona and user
-identifiers are opaque caller-supplied strings; every statement is
-parameterized, so hostile input is treated strictly as data, never executed.
-This module never reads credentials, environment variables or the production
-``data`` directory, and it makes no network calls.
-"""
+"""Per-persona, per-user web-search opt-in, off by default."""
 
 __all__ = ["init_web_settings", "set_enabled", "is_enabled"]
 

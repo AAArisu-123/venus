@@ -1,4 +1,4 @@
-﻿"""Offline tests for the Windows scheduled QQ entry point."""
+"""Offline tests for the Windows scheduled QQ entry point."""
 import logging
 import os
 import tempfile

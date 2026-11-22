@@ -1,11 +1,4 @@
-"""Per-identity activity tracking for Venus proactive messaging.
-
-Events are stored in a caller-supplied SQLite connection and keyed by
-``(persona, user_id, event_id)``, so replaying the same event cannot inflate
-activity. Every time decision uses the explicit *aware* UTC datetime supplied
-by the caller; this module never reads the system clock, environment
-variables, credentials or the production ``data`` directory.
-"""
+"""Track each user's recent activity for proactive messages."""
 
 from datetime import datetime, timedelta, timezone as dt_timezone
 from zoneinfo import ZoneInfo
@@ -75,18 +68,10 @@ def _parse_ts(value):
 
 
 def allowed_today(db, persona, user_id, now):
-    """Return whether a proactive message is allowed for this identity today.
+    """Return whether an opener is allowed for this user right now.
 
-    Counts distinct UTC active dates in the rolling seven-day window ending at
-    ``now``; future-dated events are excluded. A recent conversation suppresses
-    the proactive message so it does not interrupt an active chat:
-
-    * no activity: ``False``
-    * one to three active days: ``True`` after six hours of silence
-    * four or more active days: ``True`` after four hours of silence
-
-    The caller still enforces its own minimum interval between proactive
-    messages. ``now`` must be an aware datetime.
+    Needs some activity in the last seven days and at least four to six quiet
+    hours, depending on how many days they have been active.
     """
     now_utc = _as_utc(now, 'now')
     row = db.execute(

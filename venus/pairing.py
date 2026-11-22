@@ -1,8 +1,4 @@
-"""Owner-approval pairing codes that replace a static allowlist.
-
-An unknown user receives a short-lived code; the owner approves it locally,
-and only then is that user served. Access is denied by default.
-"""
+"""Short-lived pairing codes that the owner approves locally."""
 
 import secrets
 import sqlite3

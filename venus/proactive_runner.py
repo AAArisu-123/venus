@@ -1,24 +1,7 @@
-"""Periodic driver for proactive openers and quiet-conversation follow-ups.
+"""Background loop that sends due proactive messages.
 
-This module never reads credentials, environment variables or the system
-clock for its decisions: every time decision is driven by the explicit
-``now_utc`` argument of :func:`tick` / :func:`followup_tick`. Only
-:func:`loop_forever` consults the wall clock, and solely to produce that
-argument.
-
-Two behaviours are available:
-
-* :func:`tick` sends proactive openers. Schedules created by the modern random
-  mode use one evening slot (:data:`venus.proactive.SLOT_WINDOWS`), so the
-  companion reaches out at most once per day. Legacy fixed-time schedules keep
-  their old once-a-day behaviour.
-* :func:`followup_tick` can add one short message when the user has been quiet
-  after the assistant spoke last. The bot does not wire it up by default;
-  silence is better than a second unprompted message.
-
-Generation is callback-based. A callback may return a plain string or a dict
-``{'message': ..., 'life': ...}``; the life note is stored so later chat can
-reference it. Failures are swallowed: no retry and no secret logging.
+`tick` gets the current time from the caller; only `loop_forever` reads the
+clock. The bot currently uses one evening slot per day and no follow-ups.
 """
 
 import asyncio
@@ -47,12 +30,9 @@ from .proactive import due_and_claim, init_slots, slot_due_and_claim
 _LOG = logging.getLogger(__name__)
 HELLO_CONTENT = '你好呀，今天也要开开心心！'
 LATE_WINDOW_END = 23 * 60 + 30
-# A live chat should never be interrupted by an opener, and a short lull is
-# not an invitation either: wait at least six quiet hours.
+# Wait six quiet hours before an opener.
 MIN_ACTIVE_SILENCE_MINUTES = 6 * 60
-# A user who has not written for a week is dormant: reaching out every evening
-# would feel like spam, so the multi-slot path goes quiet until they write
-# again (their next message re-enters the normal active window).
+# A week without a message is dormant; stop until they write again.
 MAX_DORMANT_DAYS = 7
 
 
@@ -118,14 +98,10 @@ def _persist_assistant(db, persona, user_id, content, now_utc):
 async def tick(db_path, persona, send, now_utc, authorized=None, generate=None,
                timezone_name='Asia/Shanghai',
                min_active_silence_minutes=MIN_ACTIVE_SILENCE_MINUTES):
-    """Claim and send this identity's proactive opener(s) that are due now.
+    """Send whatever proactive openers are due at ``now_utc``.
 
-    A fresh connection is opened for every tick. For modern random schedules,
-    the current local minute must fall inside an unclaimed slot window and the
-    user must have been quiet for at least ``min_active_silence_minutes``. For
-    legacy fixed schedules the previous once-a-day path is unchanged. The claim
-    is committed before generation, so whichever way generation or delivery
-    turns out, that slot is never retried.
+    A new connection is opened per tick. The claim is written before generation,
+    so a failure never leads to a retry.
     """
     with closing(connect_database(db_path)) as db:
         init_activity(db)

@@ -1,4 +1,4 @@
-﻿"""Tests for the Venus pairing-code access module.
+"""Tests for the Venus pairing-code access module.
 
 Pairing is the owner-approval flow that replaces a static allowlist: an
 unknown user is given a short code, the owner approves that code locally,
