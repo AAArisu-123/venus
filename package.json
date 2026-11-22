@@ -1,0 +1,13 @@
+{
+  "name": "venus-qq-onboarding",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local QR onboarding helper for Venus QQ Bot (Tencent official connector)",
+  "type": "module",
+  "scripts": {
+    "qq:connect": "node scripts/qq-connect.mjs"
+  },
+  "dependencies": {
+    "@tencent-connect/qqbot-connector": "^1.2.0"
+  }
+}

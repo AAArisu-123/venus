@@ -1,0 +1,2 @@
+# Optional AnimaFlux runtime; PolyForm Noncommercial 1.0.0, Python 3.11+.
+animaflux @ https://api.github.com/repos/baiyan09110/animaflux/tarball/d1de1062355845703cae72f66fbf00d8268c4554
