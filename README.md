@@ -30,7 +30,7 @@
 ### 安装
 
 ```powershell
-git clone https://github.com/AAArisu-123/venus.git venus
+git clone https://github.com/Arisu-Arisu/venus.git venus
 cd venus
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1

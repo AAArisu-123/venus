@@ -30,7 +30,7 @@ You need Python 3.10+; QQ and mood state need 3.11+, and QR onboarding needs Nod
 ### Install
 
 ```powershell
-git clone https://github.com/AAArisu-123/venus.git venus
+git clone https://github.com/Arisu-Arisu/venus.git venus
 cd venus
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
