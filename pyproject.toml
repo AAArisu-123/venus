@@ -44,6 +44,10 @@ venus-doctor = "venus.doctor:main"
 venus-pair = "venus.pair_cli:main"
 venus-qq = "venus.qq_bot:main"
 
+[project.urls]
+Homepage = "https://github.com/AAArisu-123/venus"
+Issues = "https://github.com/AAArisu-123/venus/issues"
+
 [tool.setuptools]
 include-package-data = true
 
